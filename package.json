@@ -1,5 +1,6 @@
 {
   "name": "twilio-webchat-widget",
+  "proxy": "https://twilio-react-server.onrender.com",
   "version": "1.0.0",
   "description": "",
   "private": true,
