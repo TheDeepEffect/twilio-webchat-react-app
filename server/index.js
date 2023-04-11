@@ -15,7 +15,9 @@ const port = 3001;
 app.use(express.json());
 app.use(
     cors({
-        origins: allowedOrigins
+        origins: allowedOrigins,
+        methods: ['GET', 'PUT', 'POST']
+
     })
 );
 app.listen(port, () => {
