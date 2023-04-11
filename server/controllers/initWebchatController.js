@@ -3,14 +3,15 @@ const { createToken } = require("../helpers/createToken");
 const { TOKEN_TTL_IN_SECONDS } = require("../constants");
 const { getTwilioClient } = require("../helpers/getTwilioClient");
 const { logFinalAction, logInitialAction, logInterimAction } = require("../helpers/logs");
+const requestIP = require('request-ip');
 
 const contactWebchatOrchestrator = async (request, customerFriendlyName) => {
     logInterimAction("Calling Webchat Orchestrator");
 
     const params = new URLSearchParams();
-    const clientIp = request?.header?.['x-forwarded-for'] || request?.ip || request?.socket?.remoteAddress
+    const clientIp = requestIP.getClientIp(request)
     const geoLocationData = clientIp ? await axios.get(`http://ip-api.com/json/${clientIp === "::1" ? '207.122.56.199' : clientIp}`) : {}
-    console.log(geoLocationData, clientIp, "cl12")
+    // console.log(geoLocationData, clientIp, "cl12")
     params.append("AddressSid", process.env.ADDRESS_SID);
     params.append("ChatFriendlyName", "Webchat widget");
     params.append("CustomerFriendlyName", customerFriendlyName);
