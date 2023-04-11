@@ -8,14 +8,19 @@ const contactWebchatOrchestrator = async (request, customerFriendlyName) => {
     logInterimAction("Calling Webchat Orchestrator");
 
     const params = new URLSearchParams();
+    const clientIp = request?.header?.['x-forwarded-for'] || request?.ip || request?.socket?.remoteAddress
+    const geoLocationData = clientIp ? await axios.get(`http://ip-api.com/json/${clientIp === "::1" ? '207.122.56.199' : clientIp}`) : {}
+    console.log(geoLocationData, clientIp, "cl12")
     params.append("AddressSid", process.env.ADDRESS_SID);
     params.append("ChatFriendlyName", "Webchat widget");
     params.append("CustomerFriendlyName", customerFriendlyName);
+    params.append("GeoLocationData", { ...geoLocationData.data })
     params.append(
         "PreEngagementData",
         JSON.stringify({
             ...request.body?.formData,
-            friendlyName: customerFriendlyName
+            friendlyName: customerFriendlyName,
+            geoLocationData: { ...geoLocationData?.data }
         })
     );
 

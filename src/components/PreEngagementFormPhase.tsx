@@ -85,6 +85,7 @@ export const PreEngagementFormPhase = () => {
                     <Label htmlFor="query">How can we help you?</Label>
                     <TextArea
                         placeholder="Ask a question"
+                        // required={true}
                         name="query"
                         data-test="pre-engagement-chat-form-query-textarea"
                         value={query}
